@@ -1090,41 +1090,31 @@ class Iconizr {
 				$pseudoClassPos											= strrpos($name, $this->_flags['pseudo']);
 				if ($pseudoClassPos !== false) {
 					$selector											= "$prefix-".substr($name, 0, $pseudoClassPos);
-					$selectorDimensions									= "$selector-dims";
 					$sassSelector										= $selector.':'.substr($name, $pseudoClassPos + 1).',
 .'.$selector.'\\:'.substr($name, $pseudoClassPos + 1);
 					$sassSelectorDimensions								= $selectorDimensions.':'.substr($name, $pseudoClassPos + 1).',
 .'.$selector.'\\:'.substr($name, $pseudoClassPos + 1).'-dims';
 					$selector											.=
 					$selectorSuffix										= ':'.substr($name, $pseudoClassPos + 1).',.'.$selector.'\\:'.substr($name, $pseudoClassPos + 1);
-					$selectorDimensions									.= "$selectorSuffix-dims";
 				} else {
 					$selector											= "$prefix-$name";
 					$selectorDimensions									=
-					$sassSelectorDimensions								= "$selector-dims";
 					$sassSelector										= "$selector,
 .$selector\\:regular";
 					$selector											.= ",.$selector\\:regular";
 				}
 				
 				// Write out the appropriate CSS rules
-				$css[$directory.DIRECTORY_SEPARATOR.$name]				= ".$selector{background-image:url('$spritePath');background-position:0 ".(-$viewboxHeight).($viewboxHeight ? 'px' : '').";background-repeat:no-repeat}";
-				if ($this->_flags['dims']) {
-					$css[$directory.DIRECTORY_SEPARATOR.$name.'-dims']	= ".$selectorDimensions{width:".$iconWidth.'px;height:'.$iconHeight.'px}';
-				}
+				$css[$directory.DIRECTORY_SEPARATOR.$name]				= ".$selector{background-image:url('$spritePath');background-position:0 ".(-$viewboxHeight).($viewboxHeight ? 'px' : '').";background-repeat:no-repeat; width:".$iconWidth.'px;height:'.$iconHeight.'px}';
 
 				// Write out the appropriate Sass rules
 				$sass[$directory.DIRECTORY_SEPARATOR.$name]				= ".$sassSelector {
 	@extend %$prefix;
 	background-image: url('$spritePath');
 	background-position: 0 ".(-$viewboxHeight).($viewboxHeight ? 'px' : '').';
-}';
-				if ($this->_flags['dims']) {
-					$sass[$directory.DIRECTORY_SEPARATOR.$name.'-dims']	= ".$sassSelectorDimensions {
-	width: ".$iconWidth.'px;
+	width: '.$iconWidth.'px;
 	height: '.$iconHeight.'px;
 }';
-				}
 				
 				// Increment the offsets
 				$viewboxWidth											= max($viewboxWidth, $iconWidth);
@@ -1210,18 +1200,15 @@ class Iconizr {
 			$pseudoClassPos											= strrpos($name, $this->_flags['pseudo']);
 			if ($pseudoClassPos !== false) {
 				$selector											= "$prefix-".substr($name, 0, $pseudoClassPos);
-				$selectorDimensions									= "$selector-dims";
 				$sassSelector										= $selector.':'.substr($name, $pseudoClassPos + 1).',
 .'.$selector.'\\:'.substr($name, $pseudoClassPos + 1);
 				$sassSelectorDimensions								= $selectorDimensions.':'.substr($name, $pseudoClassPos + 1).',
 .'.$selector.'\\:'.substr($name, $pseudoClassPos + 1).'-dims';
 				$selector											.=
 				$selectorSuffix										= ':'.substr($name, $pseudoClassPos + 1).',.'.$selector.'\\:'.substr($name, $pseudoClassPos + 1);
-				$selectorDimensions									.= "$selectorSuffix-dims";
 			} else {
 				$selector											= "$prefix-$name";
 				$selectorDimensions									=
-				$sassSelectorDimensions								= "$selector-dims";
 				$sassSelector										= "$selector,
 .$selector\\:regular";
 				$selector											.= ",.$selector\\:regular";
@@ -1233,23 +1220,16 @@ class Iconizr {
 			imagedestroy($iconImage);
 			
 			// Write out the appropriate CSS rules
-			$css[$directory.DIRECTORY_SEPARATOR.$name]				= ".$selector{background-image:url('$spritePath');background-position:0 ".(-$icon[2]).($icon[2] ? 'px' : '').';background-repeat:no-repeat}';
-			if ($this->_flags['dims']) {
-				$css[$directory.DIRECTORY_SEPARATOR.$name.'-dims']	= ".$selectorDimensions{width:".$icon[3].'px;height:'.$icon[4].'px}';
-			}
+			$css[$directory.DIRECTORY_SEPARATOR.$name]				= ".$selector{background-image:url('$spritePath');background-position:0 ".(-$icon[2]).($icon[2] ? 'px' : '').';background-repeat:no-repeat;width:'.$icon[3].'px;height:'.$icon[4].'px}';
 
 			// Write out the appropriate Sass rules
 			$sass[$directory.DIRECTORY_SEPARATOR.$name]				= ".$sassSelector {
 	@extend %$prefix;
 	background-image: url('$spritePath');
 	background-position: 0 ".(-$icon[2]).($icon[2] ? 'px' : '').';
-}';
-			if ($this->_flags['dims']) {
-				$sass[$directory.DIRECTORY_SEPARATOR.$name.'-dims']	= ".$sassSelectorDimensions {
-	width: ".$icon[3].'px;
+	width: '.$icon[3].'px;
 	height: '.$icon[4].'px;
 }';
-			}
 		}
 		
 		// Save the PNG sprite
@@ -1305,21 +1285,15 @@ class Iconizr {
 			$pseudoClassPos											= strrpos($name, $this->_flags['pseudo']);
 			if ($pseudoClassPos !== false) {
 				$selector											= "$prefix-".substr($name, 0, $pseudoClassPos);
-				$selectorDimensions									= "$selector-dims";
 				$selector											.=
 				$selectorSuffix										= ':'.substr($name, $pseudoClassPos + 1).',.'.$selector.'\\:'.substr($name, $pseudoClassPos + 1);
-				$selectorDimensions									.= "$selectorSuffix-dims";
 			} else {
 				$selector											= "$prefix-$name";
-				$selectorDimensions									= "$selector-dims";
 				$selector											.= ",.$selector\\:regular";
 			}
 			
-			$css[$directory.DIRECTORY_SEPARATOR.$name]				= ".$selector{background-image:url('".substr($icon, strlen($this->_target))."');background-repeat:no-repeat}";
-			if ($this->_flags['dims']) {
-				list($iconWidth, $iconHeight)						= $this->_getIconDimensions($directory, $icon, $name);
-				$css[$directory.DIRECTORY_SEPARATOR.$name.'-dims']	= ".$selectorDimensions{width:".$iconWidth.'px;height:'.$iconHeight.'px}';
-			}
+			list($iconWidth, $iconHeight)							= $this->_getIconDimensions($directory, $icon, $name);
+			$css[$directory.DIRECTORY_SEPARATOR.$name]				= ".$selector{background-image:url('".substr($icon, strlen($this->_target))."');background-repeat:no-repeat; width:'.$iconWidth.'px;height:'.$iconHeight.'px}";
 		}
 		return $css;
 	}
@@ -1342,21 +1316,16 @@ class Iconizr {
 			$pseudoClassPos											= strrpos($name, $this->_flags['pseudo']);
 			if ($pseudoClassPos !== false) {
 				$selector											= "$prefix-".substr($name, 0, $pseudoClassPos);
-				$selectorDimensions									= "$selector-dims";
 				$selector											.=
 				$selectorSuffix										= ':'.substr($name, $pseudoClassPos + 1).',.'.$selector.'\\:'.substr($name, $pseudoClassPos + 1);
-				$selectorDimensions									.= "$selectorSuffix-dims";
 			} else {
 				$selector											= "$prefix-$name";
-				$selectorDimensions									= "$selector-dims";
 				$selector											.= ",.$selector\\:regular";
 			}
-			
-			$css[$directory.DIRECTORY_SEPARATOR.$name]				= ".$selector{background-image:url('$icon');background-repeat:no-repeat}";
-			if ($this->_flags['dims']) {
-				list($iconWidth, $iconHeight)						= $this->_getIconDimensions($directory, $icon, $name);
-				$css[$directory.DIRECTORY_SEPARATOR.$name.'-dims']	= ".$selectorDimensions{width:".$iconWidth.'px;height:'.$iconHeight.'px}';
-			}
+
+
+			list($iconWidth, $iconHeight)							= $this->_getIconDimensions($directory, $icon, $name);
+			$css[$directory.DIRECTORY_SEPARATOR.$name]				= ".$selector{background-image:url('$icon');background-repeat:no-repeat; width:".$iconWidth.'px;height:'.$iconHeight.'px}';
 		}
 		return $css;
 	}
@@ -1384,29 +1353,25 @@ class Iconizr {
 			$pseudoClassPos											= strrpos($name, $this->_flags['pseudo']);
 			if ($pseudoClassPos !== false) {
 				$selector											= "$prefix-".substr($name, 0, $pseudoClassPos);
-				$selectorDimensions									= "$selector-dims";
 				$selector											.=
 				$selectorSuffix										= ':'.substr($name, $pseudoClassPos + 1).',
 .'.$selector.'\\:'.substr($name, $pseudoClassPos + 1);
-				$selectorDimensions									.= "$selectorSuffix-dims";
 			} else {
 				$selector											= "$prefix-$name";
-				$selectorDimensions									= "$selector-dims";
 				$selector											.= ",
 .$selector\\:regular";
 			}
+
+			// Get icon width and height
+			list($iconWidth, $iconHeight)						= $this->_getIconDimensions($directory, $icon, $name);
 			
+			// Generate sass selector
 			$sass[$directory.DIRECTORY_SEPARATOR.$name]				= ".$selector {
 	@extend %$prefix;
 	background-image: url('".substr($icon, strlen($this->_target))."');
-}";
-			if ($this->_flags['dims']) {
-				list($iconWidth, $iconHeight)						= $this->_getIconDimensions($directory, $icon, $name);
-				$sass[$directory.DIRECTORY_SEPARATOR.$name.'-dims']	= ".$selectorDimensions {
 	width: ".$iconWidth.'px;
 	height: '.$iconHeight.'px;
 }';
-		}
 		}
 		return $sass;
 	}
@@ -1434,29 +1399,24 @@ class Iconizr {
 			$pseudoClassPos											= strrpos($name, $this->_flags['pseudo']);
 			if ($pseudoClassPos !== false) {
 				$selector											= "$prefix-".substr($name, 0, $pseudoClassPos);
-				$selectorDimensions									= "$selector-dims";
 				$selector											.=
 				$selectorSuffix										= ':'.substr($name, $pseudoClassPos + 1).',
 .'.$selector.'\\:'.substr($name, $pseudoClassPos + 1);
-				$selectorDimensions									.= "$selectorSuffix-dims";
 			} else {
 				$selector											= "$prefix-$name";
-				$selectorDimensions									= "$selector-dims";
 				$selector											.= ",
 .$selector\\:regular";
 			}
 			
+			list($iconWidth, $iconHeight)						= $this->_getIconDimensions($directory, $icon, $name);
+
 			$sass[$directory.DIRECTORY_SEPARATOR.$name]				= ".$selector {
 	@extend %$prefix;
 	background-image: url('$icon');
-}";
-			if ($this->_flags['dims']) {
-				list($iconWidth, $iconHeight)						= $this->_getIconDimensions($directory, $icon, $name);
-				$sass[$directory.DIRECTORY_SEPARATOR.$name.'-dims']	= ".$selectorDimensions {
 	width: ".$iconWidth.'px;
 	height: '.$iconHeight.'px;
 }';
-			}
+			
 		}
 		return $sass;
 	}
