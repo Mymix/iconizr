@@ -600,7 +600,16 @@ class Iconizr {
 			if (count($cssFiles)) {
 				$this->_createPreviewAndLoaderFragment($cssFiles);
 			}
-			
+
+			// Open default browser on Mac with preview page
+			$return								= 0;
+			$output								= array();
+			$previewFilename					= strlen($stylesheet) ? pathinfo($stylesheet, PATHINFO_FILENAME).'-preview.html' : $this->_flags['css'].'-preview.html';
+			$binary								= @exec('open ./css/' . $previewFilename, $output, $return);
+			$this->_log("Opening default browser", self::LOG_CREATE);
+			if ($return == 1) {
+				$this->_log("Browser cannot be opened or the file does not exist, check the preview file in /css/", self::LOG_CREATE);
+			}
 		// Else
 		} else {
 			$this->_usage('Please provide at least one input directory containing SVG files');
